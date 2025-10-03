@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, TrendingUp, Plus, Edit2, ChevronLeft, ChevronRight, X } from 'lucide-react';
 
 const HabitTrackerApp = () => {
   const [habits, setHabits] = useState([
@@ -14,7 +13,6 @@ const HabitTrackerApp = () => {
   const [swipeIndex, setSwipeIndex] = useState(0);
   const [checkingDate, setCheckingDate] = useState(null);
   const [viewDate, setViewDate] = useState(new Date());
-  const [editMode, setEditMode] = useState(false);
   const [newHabitText, setNewHabitText] = useState('');
   const [newHabitType, setNewHabitType] = useState(true);
 
@@ -133,7 +131,6 @@ const HabitTrackerApp = () => {
     setHabits(habits.filter(h => h.id !== id));
   };
 
-  // HOME SCREEN
   if (currentScreen === 'home') {
     const todayScore = calculateDayScore(new Date());
     const yesterdayDate = new Date(Date.now() - 86400000).toDateString();
@@ -142,13 +139,11 @@ const HabitTrackerApp = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 p-4">
         <div className="max-w-md mx-auto">
-          {/* Header */}
           <div className="text-center mb-8 pt-8">
             <h1 className="text-4xl font-bold text-gray-800 mb-2">Трекер привычек</h1>
             <p className="text-gray-600">Метод Франклина</p>
           </div>
 
-          {/* Today Score */}
           {todayScore !== null && (
             <div className={`${getColorForScore(todayScore)} text-white rounded-3xl p-8 mb-6 shadow-lg`}>
               <div className="text-center">
@@ -158,7 +153,6 @@ const HabitTrackerApp = () => {
             </div>
           )}
 
-          {/* Check Yesterday Button */}
           {!hasYesterdayRecord && (
             <button
               onClick={() => startChecking(yesterdayDate)}
@@ -168,17 +162,16 @@ const HabitTrackerApp = () => {
             </button>
           )}
 
-          {/* Menu Buttons */}
           <div className="space-y-3">
             <button
               onClick={() => setCurrentScreen('reports')}
               className="w-full bg-white rounded-2xl p-5 shadow-md hover:shadow-lg transition flex items-center justify-between"
             >
               <div className="flex items-center gap-3">
-                <TrendingUp className="text-indigo-600" size={24} />
+                <span className="text-indigo-600 text-2xl">📈</span>
                 <span className="text-lg font-medium text-gray-800">Отчёты</span>
               </div>
-              <ChevronRight className="text-gray-400" size={20} />
+              <span className="text-gray-400">→</span>
             </button>
 
             <button
@@ -186,10 +179,10 @@ const HabitTrackerApp = () => {
               className="w-full bg-white rounded-2xl p-5 shadow-md hover:shadow-lg transition flex items-center justify-between"
             >
               <div className="flex items-center gap-3">
-                <Edit2 className="text-indigo-600" size={24} />
+                <span className="text-indigo-600 text-2xl">✏️</span>
                 <span className="text-lg font-medium text-gray-800">Управление привычками</span>
               </div>
-              <ChevronRight className="text-gray-400" size={20} />
+              <span className="text-gray-400">→</span>
             </button>
 
             <button
@@ -197,10 +190,10 @@ const HabitTrackerApp = () => {
               className="w-full bg-white rounded-2xl p-5 shadow-md hover:shadow-lg transition flex items-center justify-between"
             >
               <div className="flex items-center gap-3">
-                <Calendar className="text-indigo-600" size={24} />
+                <span className="text-indigo-600 text-2xl">📅</span>
                 <span className="text-lg font-medium text-gray-800">Календарь</span>
               </div>
-              <ChevronRight className="text-gray-400" size={20} />
+              <span className="text-gray-400">→</span>
             </button>
           </div>
         </div>
@@ -208,14 +201,12 @@ const HabitTrackerApp = () => {
     );
   }
 
-  // SWIPE SCREEN
   if (currentScreen === 'swipe') {
     const habit = habits[swipeIndex];
     const progress = ((swipeIndex + 1) / habits.length) * 100;
 
     return (
       <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 p-4 flex flex-col">
-        {/* Progress */}
         <div className="max-w-md mx-auto w-full pt-8 mb-4">
           <div className="bg-gray-200 rounded-full h-3 mb-2">
             <div 
@@ -228,7 +219,6 @@ const HabitTrackerApp = () => {
           </div>
         </div>
 
-        {/* Card */}
         <div className="flex-1 flex items-center justify-center max-w-md mx-auto w-full">
           <div className="bg-white rounded-3xl shadow-2xl p-8 w-full">
             <div className="text-center mb-8">
@@ -248,7 +238,6 @@ const HabitTrackerApp = () => {
               </div>
             </div>
 
-            {/* Swipe Buttons */}
             <div className="flex gap-4">
               <button
                 onClick={() => handleSwipe('left')}
@@ -269,7 +258,6 @@ const HabitTrackerApp = () => {
     );
   }
 
-  // RESULT SCREEN
   if (currentScreen === 'result') {
     const score = calculateDayScore(checkingDate);
     const colorClass = getColorForScore(score);
@@ -299,7 +287,6 @@ const HabitTrackerApp = () => {
     );
   }
 
-  // REPORTS SCREEN
   if (currentScreen === 'reports') {
     const weekData = getWeekData();
     const monthData = getMonthData();
@@ -308,16 +295,14 @@ const HabitTrackerApp = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 p-4">
         <div className="max-w-md mx-auto">
-          {/* Header */}
           <div className="flex items-center justify-between mb-6 pt-8">
-            <button onClick={() => setCurrentScreen('home')} className="text-gray-600">
-              <ChevronLeft size={28} />
+            <button onClick={() => setCurrentScreen('home')} className="text-gray-600 text-2xl">
+              ←
             </button>
             <h2 className="text-2xl font-bold text-gray-800">Отчёты</h2>
             <div className="w-7" />
           </div>
 
-          {/* Week Chart */}
           <div className="bg-white rounded-3xl p-6 shadow-lg mb-6">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">Неделя (средн: {weekAvg}%)</h3>
             <div className="flex items-end justify-between gap-2 h-48">
@@ -334,7 +319,6 @@ const HabitTrackerApp = () => {
             </div>
           </div>
 
-          {/* Month Chart */}
           {monthData.length > 0 && (
             <div className="bg-white rounded-3xl p-6 shadow-lg">
               <h3 className="text-lg font-semibold text-gray-800 mb-4">Месяц</h3>
@@ -355,21 +339,18 @@ const HabitTrackerApp = () => {
     );
   }
 
-  // HABITS MANAGEMENT SCREEN
   if (currentScreen === 'habits') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 p-4">
         <div className="max-w-md mx-auto">
-          {/* Header */}
           <div className="flex items-center justify-between mb-6 pt-8">
-            <button onClick={() => setCurrentScreen('home')} className="text-gray-600">
-              <ChevronLeft size={28} />
+            <button onClick={() => setCurrentScreen('home')} className="text-gray-600 text-2xl">
+              ←
             </button>
             <h2 className="text-2xl font-bold text-gray-800">Привычки</h2>
             <div className="w-7" />
           </div>
 
-          {/* Add New Habit */}
           <div className="bg-white rounded-3xl p-6 shadow-lg mb-6">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">Добавить привычку</h3>
             <input
@@ -403,12 +384,11 @@ const HabitTrackerApp = () => {
               onClick={addHabit}
               className="w-full bg-indigo-600 text-white rounded-xl py-3 font-semibold hover:bg-indigo-700 transition"
             >
-              <Plus className="inline mr-2" size={20} />
+              <span className="text-xl mr-2">➕</span>
               Добавить
             </button>
           </div>
 
-          {/* Habits List */}
           <div className="space-y-3">
             {habits.map((habit) => (
               <div
@@ -423,9 +403,9 @@ const HabitTrackerApp = () => {
                 </div>
                 <button
                   onClick={() => deleteHabit(habit.id)}
-                  className="text-red-500 hover:bg-red-50 p-2 rounded-lg transition"
+                  className="text-red-500 hover:bg-red-50 p-2 rounded-lg transition text-xl"
                 >
-                  <X size={20} />
+                  ✕
                 </button>
               </div>
             ))}
@@ -435,7 +415,6 @@ const HabitTrackerApp = () => {
     );
   }
 
-  // CALENDAR SCREEN
   if (currentScreen === 'calendar') {
     const daysInMonth = [];
     const today = new Date();
@@ -455,36 +434,33 @@ const HabitTrackerApp = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 p-4">
         <div className="max-w-md mx-auto">
-          {/* Header */}
           <div className="flex items-center justify-between mb-6 pt-8">
-            <button onClick={() => setCurrentScreen('home')} className="text-gray-600">
-              <ChevronLeft size={28} />
+            <button onClick={() => setCurrentScreen('home')} className="text-gray-600 text-2xl">
+              ←
             </button>
             <h2 className="text-2xl font-bold text-gray-800">Календарь</h2>
             <div className="w-7" />
           </div>
 
-          {/* Month Navigation */}
           <div className="bg-white rounded-3xl p-6 shadow-lg mb-6">
             <div className="flex items-center justify-between mb-4">
               <button
                 onClick={() => setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() - 1))}
-                className="p-2 hover:bg-gray-100 rounded-lg transition"
+                className="p-2 hover:bg-gray-100 rounded-lg transition text-xl"
               >
-                <ChevronLeft size={24} />
+                ←
               </button>
               <h3 className="text-xl font-semibold">
                 {viewDate.toLocaleDateString('ru-RU', { month: 'long', year: 'numeric' })}
               </h3>
               <button
                 onClick={() => setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() + 1))}
-                className="p-2 hover:bg-gray-100 rounded-lg transition"
+                className="p-2 hover:bg-gray-100 rounded-lg transition text-xl"
               >
-                <ChevronRight size={24} />
+                →
               </button>
             </div>
 
-            {/* Weekday Headers */}
             <div className="grid grid-cols-7 gap-2 mb-2">
               {['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'].map(day => (
                 <div key={day} className="text-center text-sm font-medium text-gray-600">
@@ -493,7 +469,6 @@ const HabitTrackerApp = () => {
               ))}
             </div>
 
-            {/* Calendar Grid */}
             <div className="grid grid-cols-7 gap-2">
               {daysInMonth.map((date, i) => {
                 if (!date) {
@@ -525,7 +500,6 @@ const HabitTrackerApp = () => {
             </div>
           </div>
 
-          {/* Legend */}
           <div className="bg-white rounded-3xl p-6 shadow-lg">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">Легенда</h3>
             <div className="space-y-2">
